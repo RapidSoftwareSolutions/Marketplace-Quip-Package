@@ -1,0 +1,1222 @@
+{
+    "package": "Quip",
+    "tagline": "Quip API",
+    "description": "The Quip API provides read\/write access to Quip, enabling you to automate processes and integrate Quip with other products you or your company uses.",
+    "image": "https:\/\/logo.clearbit.com\/quip.com",
+    "repo": "https:\/\/github.com\/RapidSoftwareSolutions\/Marketplace-Quip-Package",
+    "keywords": [
+        "API"
+    ],
+    "accounts": {
+        "domain": "https:\/\/quip.com\/",
+        "credentials": [
+            "accessToken"
+        ]
+    },
+    "steps": [
+      "To generate a personal access token, visit https://quip.com/api/personal-token",
+      "Whenever you generate a new token, all previous tokens are automatically invalidated."
+    ],
+    "blocks": [
+        {
+            "name": "getSingleThread",
+            "description": "Returns the given thread.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                },
+                {
+                    "name": "id",
+                    "type": "String",
+                    "info": "Thread id.",
+                    "required": true
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/threads\/{$data['id']}",
+                "method": "get",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "getThreads",
+            "description": "Returns the given threads.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                },
+                {
+                    "name": "ids",
+                    "type": "List",
+                    "info": "Thread id list.",
+                    "required": true,
+                    "structure": {
+                        "name": "id",
+                        "type": "String",
+                        "info": "Single id."
+                    },
+                    "vendorSchema": {
+                        "format": "toString:{,}"
+                    }
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/threads/",
+                "method": "get",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                },
+                "requestParameters": [
+                    {
+                        "type": "query",
+                        "parameters": [
+                            "ids"
+                        ]
+                    }
+                ]
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "getRecentThread",
+            "description": "Returns the given thread.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/threads\/recent",
+                "method": "get",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "createDocument",
+            "description": "Creates a document, returning the new thread in the format",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                },
+                {
+                    "name": "content",
+                    "type": "String",
+                    "info": "The HTML or Markdown content of the new document",
+                    "required": true
+                },
+                {
+                    "name": "title",
+                    "type": "String",
+                    "info": "The title of the new document. If not specified, we infer the title from the first content of the document, e.g., the first heading.",
+                    "required": false
+                },
+                {
+                    "name": "format",
+                    "type": "Select",
+                    "options": [
+                        "html",
+                        "markdown"
+                    ],
+                    "info": "Either html or markdown.",
+                    "required": false
+                },
+                {
+                    "name": "memberIds",
+                    "type": "List",
+                    "info": "List of folder IDs or user IDs. The document will be placed in the specified folders, and any individual users listed will be granted individual access to the document. If this argument is not given, the document is created in the authenticated user's Private folder.",
+                    "required": false,
+                    "structure": {
+                        "name": "id",
+                        "type": "String",
+                        "info": "Member id"
+                    },
+                    "vendorSchema": {
+                        "name": "member_ids",
+                        "format": "toString{,}"
+                    }
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/threads\/new-document",
+                "method": "post",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                },
+                "requestParameters": [
+                    {
+                        "type": "form_params",
+                        "parameters": [
+                            "content",
+                            "format",
+                            "title",
+                            "member_ids"
+                        ]
+                    }
+                ]
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "createSpreadsheet",
+            "description": "Creates a spreadsheet, returning the new thread in the format",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                },
+                {
+                    "name": "content",
+                    "type": "String",
+                    "info": "The HTML or Markdown content of the new document",
+                    "required": true
+                },
+                {
+                    "name": "title",
+                    "type": "String",
+                    "info": "The title of the new document. If not specified, we infer the title from the first content of the document, e.g., the first heading.",
+                    "required": false
+                },
+                {
+                    "name": "format",
+                    "type": "Select",
+                    "options": [
+                        "html",
+                        "markdown"
+                    ],
+                    "info": "Either html or markdown.",
+                    "required": false
+                },
+                {
+                    "name": "memberIds",
+                    "type": "List",
+                    "info": "List of folder IDs or user IDs. The document will be placed in the specified folders, and any individual users listed will be granted individual access to the document. If this argument is not given, the document is created in the authenticated user's Private folder.",
+                    "required": false,
+                    "structure": {
+                        "name": "id",
+                        "type": "String",
+                        "info": "Member id"
+                    },
+                    "vendorSchema": {
+                        "name": "member_ids",
+                        "format": "toString{,}"
+                    }
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/threads\/new-document",
+                "method": "post",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                },
+                "requestParameters": [
+                    {
+                        "type": "form_params",
+                        "parameters": [
+                            "content",
+                            "format",
+                            "title",
+                            "member_ids"
+                        ]
+                    }
+                ]
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "updateDocument",
+            "description": "Incrementally modifies the content of a document.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                },
+                {
+                    "name": "threadId",
+                    "type": "String",
+                    "info": "The thread whose document you want to modify",
+                    "required": true,
+                    "vendorSchema": {
+                        "name": "thread_id"
+                    }
+                },
+                {
+                    "name": "content",
+                    "type": "String",
+                    "info": "The HTML or Markdown content of the new document",
+                    "required": false
+                },
+                {
+                    "name": "format",
+                    "type": "Select",
+                    "options": [
+                        "html",
+                        "markdown"
+                    ],
+                    "info": "Either html or markdown.",
+                    "required": false
+                },
+                {
+                    "name": "sectionId",
+                    "type": "String",
+                    "info": "The id for the section you want to modify. Needed for some location values.",
+                    "required": false,
+                    "vendorSchema": {
+                        "name": "section_id"
+                    }
+                },
+                {
+                    "name": "location",
+                    "type": "Select",
+                    "options": [
+                        "0",
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5"
+                    ],
+                    "info": "Where we should insert the new content. Must be: 0,1,2,3,4,5",
+                    "required": false
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/threads\/edit-document",
+                "method": "post",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                },
+                "requestParameters": [
+                    {
+                        "type": "form_params",
+                        "parameters": [
+                            "thread_id",
+                            "content",
+                            "format",
+                            "section_id",
+                            "location"
+                        ]
+                    }
+                ]
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "addMembersToThread",
+            "description": "Shares the given thread with the given user IDs and\/or adds the given thread to the given folder IDs. ",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                },
+                {
+                    "name": "threadId",
+                    "type": "String",
+                    "info": "The thread whose document you want to modify",
+                    "required": true,
+                    "vendorSchema": {
+                        "name": "thread_id"
+                    }
+                },
+                {
+                    "name": "memberIds",
+                    "type": "List",
+                    "info": "List of folder IDs or user IDs.",
+                    "required": true,
+                    "structure": {
+                        "name": "id",
+                        "type": "String",
+                        "info": "Member id"
+                    },
+                    "vendorSchema": {
+                        "name": "member_ids",
+                        "format": "toString{,}"
+                    }
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/threads\/add-members",
+                "method": "post",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                },
+                "requestParameters": [
+                    {
+                        "type": "form_params",
+                        "parameters": [
+                            "thread_id",
+                            "member_ids"
+                        ]
+                    }
+                ]
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "removeMembersFromThread",
+            "description": "Removes the given individuals from the given thread and\/or removes the thread from the given folders.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                },
+                {
+                    "name": "threadId",
+                    "type": "String",
+                    "info": "The thread whose document you want to modify",
+                    "required": true,
+                    "vendorSchema": {
+                        "name": "thread_id"
+                    }
+                },
+                {
+                    "name": "memberIds",
+                    "type": "List",
+                    "info": "List of folder IDs or user IDs.",
+                    "required": false,
+                    "structure": {
+                        "name": "id",
+                        "type": "String",
+                        "info": "Member id"
+                    },
+                    "vendorSchema": {
+                        "name": "member_ids",
+                        "format": "toString{,}"
+                    }
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/threads\/remove-members",
+                "method": "post",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                },
+                "requestParameters": [
+                    {
+                        "type": "form_params",
+                        "parameters": [
+                            "thread_id",
+                            "member_ids"
+                        ]
+                    }
+                ]
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "getThreadBlob",
+            "description": "Retrieves the binary representation of the given blob from the given thread if the user has access.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                },
+                {
+                    "name": "threadId",
+                    "type": "String",
+                    "info": "The thread whose document you want to modify",
+                    "required": true,
+                    "vendorSchema": {
+                        "name": "thread_id"
+                    }
+                },
+                {
+                    "name": "blobId",
+                    "type": "String",
+                    "info": "Blob id",
+                    "required": true,
+                    "vendorSchema": {
+                        "name": "blob_id"
+                    }
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/blob\/{$data['thread_id']}\/{$data['blob_id']}",
+                "method": "get",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "addBlobToThread",
+            "description": "Uploads an image or other blob to the given thread.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                },
+                {
+                    "name": "threadId",
+                    "type": "String",
+                    "info": "The thread whose document you want to modify",
+                    "required": true,
+                    "vendorSchema": {
+                        "name": "thread_id"
+                    }
+                },
+                {
+                    "name": "blob",
+                    "type": "File",
+                    "info": "Image file.",
+                    "required": true
+                },
+                {
+                    "name": "name",
+                    "type": "String",
+                    "info": "File name",
+                    "required": true
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/blob\/{$data['thread_id']}",
+                "method": "post",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                },
+                "requestParameters": [
+                    {
+                        "type": "form_params",
+                        "parameters": [
+                            "blob"
+                        ]
+                    }
+                ]
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "getRecentMessages",
+            "description": "Returns a list of the most recent messages for the given thread, ordered reverse-chronologically.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                },
+                {
+                    "name": "threadId",
+                    "type": "String",
+                    "info": "The thread whose document you want to modify",
+                    "required": true,
+                    "vendorSchema": {
+                        "name": "thread_id"
+                    }
+                },
+                {
+                    "name": "count",
+                    "type": "Number",
+                    "info": "The number of messages to return.",
+                    "required": false
+                },
+                {
+                    "name": "maxCreatedUsec",
+                    "type": "Number",
+                    "info": "If given, we return messages updated before the given max_created_usec, which is a UNIX timestamp in microseconds. ",
+                    "required": false,
+                    "vendorSchema": {
+                        "name": "max_created_usec"
+                    }
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/messages\/{$data['thread_id']}",
+                "method": "get",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                },
+                "requestParameters": [
+                    {
+                        "type": "query",
+                        "parameters": [
+                            "count",
+                            "max_created_usec"
+                        ]
+                    }
+                ]
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "addMessage",
+            "description": "Adds a chat message to the given thread, posted as the authenticated user. ",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                },
+                {
+                    "name": "threadId",
+                    "type": "String",
+                    "info": "The thread whose document you want to modify",
+                    "required": true,
+                    "vendorSchema": {
+                        "name": "thread_id"
+                    }
+                },
+                {
+                    "name": "frame",
+                    "type": "Select",
+                    "options": [
+                        "bubble",
+                        "card",
+                        "line"
+                    ],
+                    "info": "One of bubble, card, or line",
+                    "required": false
+                },
+                {
+                    "name": "content",
+                    "type": "String",
+                    "info": "Plain text content of the new message (ignored if parts is supplied)",
+                    "required": false
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/messages\/new",
+                "method": "post",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                },
+                "requestParameters": [
+                    {
+                        "type": "form_params",
+                        "parameters": [
+                            "thread_id",
+                            "frame",
+                            "content"
+                        ]
+                    }
+                ]
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "getSingleFolder",
+            "description": "Returns the given folders.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                },
+                {
+                    "name": "folderId",
+                    "type": "String",
+                    "info": "Single folder id",
+                    "required": true
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/folders\/{$data['folderId']}",
+                "method": "get",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "getFolders",
+            "description": "Return data for each of the given folders in a dictionary by folder ID.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                },
+                {
+                    "name": "foldersId",
+                    "type": "List",
+                    "info": "List of folder id`s",
+                    "required": true,
+                    "vendorSchema": {
+                        "name": "ids",
+                        "format": "toString:{,}"
+                    }
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/folders/",
+                "method": "get",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                },
+                "requestParameters": [
+                    {
+                        "type": "query",
+                        "parameters": [
+                            "ids"
+                        ]
+                    }
+                ]
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "createFolder",
+            "description": "Creates a folder.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                },
+                {
+                    "name": "title",
+                    "type": "String",
+                    "info": "The name of the folder",
+                    "required": true
+                },
+                {
+                    "name": "parentId",
+                    "type": "String",
+                    "info": "If given, we make the folder a child of the given folder. If not given, we create the folder on the authenticated user's Private folder.",
+                    "required": false,
+                    "vendorSchema": {
+                        "name": "parent_id"
+                    }
+                },
+                {
+                    "name": "color",
+                    "type": "String",
+                    "info": "One of the color constants above. Example: manila",
+                    "required": false
+                },
+                {
+                    "name": "memberIds",
+                    "type": "List",
+                    "info": "List of folder IDs or user IDs.",
+                    "required": false,
+                    "structure": {
+                        "name": "id",
+                        "type": "String",
+                        "info": "Member id"
+                    },
+                    "vendorSchema": {
+                        "name": "member_ids",
+                        "format": "toString{,}"
+                    }
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/folders\/new",
+                "method": "post",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                },
+                "requestParameters": [
+                    {
+                        "type": "form_params",
+                        "parameters": [
+                            "title",
+                            "parent_id",
+                            "color",
+                            "member_ids"
+                        ]
+                    }
+                ]
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "updateFolder",
+            "description": "Updates a folder.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                },
+                {
+                    "name": "folderId",
+                    "type": "String",
+                    "info": "The folder to alter",
+                    "required": true,
+                    "vendorSchema": {
+                        "name": "folder_id"
+                    }
+                },
+                {
+                    "name": "title",
+                    "type": "String",
+                    "info": "The name of the folder",
+                    "required": false
+                },
+                {
+                    "name": "color",
+                    "type": "String",
+                    "info": "One of the color constants above. Example: manila",
+                    "required": false
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/folders\/new",
+                "method": "post",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                },
+                "requestParameters": [
+                    {
+                        "type": "form_params",
+                        "parameters": [
+                            "title",
+                            "color"
+                        ]
+                    }
+                ]
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "addPeopleToFolder",
+            "description": "Shares the given folder with the given user IDs.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                },
+                {
+                    "name": "folderId",
+                    "type": "String",
+                    "info": "The folder to which you want to add users.",
+                    "required": true,
+                    "vendorSchema": {
+                        "name": "folder_id"
+                    }
+                },
+                {
+                    "name": "memberIds",
+                    "type": "List",
+                    "info": "List of folder IDs or user IDs.",
+                    "required": false,
+                    "structure": {
+                        "name": "id",
+                        "type": "String",
+                        "info": "Member id"
+                    },
+                    "vendorSchema": {
+                        "name": "member_ids",
+                        "format": "toString{,}"
+                    }
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/folders\/add-members",
+                "method": "post",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                },
+                "requestParameters": [
+                    {
+                        "type": "form_params",
+                        "parameters": [
+                            "folder_id",
+                            "member_ids"
+                        ]
+                    }
+                ]
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "removePeopleFromFolder",
+            "description": "Shares the given folder with the given user IDs.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                },
+                {
+                    "name": "folderId",
+                    "type": "String",
+                    "info": "The folder to which you want to add users.",
+                    "required": true,
+                    "vendorSchema": {
+                        "name": "folder_id"
+                    }
+                },
+                {
+                    "name": "memberIds",
+                    "type": "List",
+                    "info": "List of folder IDs or user IDs.",
+                    "required": false,
+                    "structure": {
+                        "name": "id",
+                        "type": "String",
+                        "info": "Member id"
+                    },
+                    "vendorSchema": {
+                        "name": "member_ids",
+                        "format": "toString{,}"
+                    }
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/folders\/remove-members",
+                "method": "post",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                },
+                "requestParameters": [
+                    {
+                        "type": "form_params",
+                        "parameters": [
+                            "folder_id",
+                            "member_ids"
+                        ]
+                    }
+                ]
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "getSingleUser",
+            "description": "Returns the given users.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                },
+                {
+                    "name": "userId",
+                    "type": "String",
+                    "info": "The user ID.",
+                    "required": true
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/users\/{$data['userId']}",
+                "method": "get",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "getUsers",
+            "description": "Return data for each of the given users in a dictionary.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                },
+                {
+                    "name": "usersId",
+                    "type": "List",
+                    "info": "List of user id",
+                    "required": true,
+                    "structure": {
+                        "name": "id",
+                        "type": "String",
+                        "info": "Single user id"
+                    },
+                    "vendorSchema": {
+                        "name": "ids",
+                        "format": "toString{,}"
+                    }
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/users/",
+                "method": "get",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                },
+                "requestParameters": [
+                    {
+                        "type": "query",
+                        "parameters": [
+                            "ids"
+                        ]
+                    }
+                ]
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "getAuthenticatedUser",
+            "description": "Returns the currently authenticated user.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/users\/current",
+                "method": "get",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        },
+        {
+            "name": "getContacts",
+            "description": "Returns a list of the contacts for the authenticated user.",
+            "args": [
+                {
+                    "name": "accessToken",
+                    "type": "credentials",
+                    "info": "Your quip OAuth2 access token",
+                    "required": true
+                }
+            ],
+            "vendorRequest": {
+                "url": "https:\/\/platform.quip.com\/1\/users\/contacts",
+                "method": "get",
+                "headers": {
+                    "Authorization": "Bearer {$data['accessToken']}"
+                }
+            },
+            "callbacks": [
+                {
+                    "name": "error",
+                    "info": "Error"
+                },
+                {
+                    "name": "success",
+                    "info": "Success"
+                }
+            ]
+        }
+    ]
+}
