@@ -15,7 +15,7 @@ $app->post('/api/Quip/updateFolder', function ($request, $response) {
     $requiredParams = ['accessToken'=>'accessToken','folderId'=>'folder_id'];
     $optionalParams = ['title'=>'title','color'=>'color'];
     $bodyParams = [
-       'form_params' => ['title','color']
+       'form_params' => ['title','color','folder_id']
     ];
 
     $data = \Models\Params::createParams($requiredParams, $optionalParams, $post_data['args']);
