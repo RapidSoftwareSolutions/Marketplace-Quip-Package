@@ -75,6 +75,16 @@ Incrementally modifies the content of a document.
 | sectionId  | String     | The id for the section you want to modify. Needed for some location values.
 | location   | Select     | Where we should insert the new content. Must be: 0,1,2,3,4,5
 
+```
+location:
+0: APPEND - Append to the end of the document.
+1: PREPEND - Prepend to the beginning of the document.
+2: AFTER_SECTION - Insert after the section specified by section_id.
+3: BEFORE_SECTION - Insert before the section specified by section_id.
+4: REPLACE_SECTION - Delete the section specified by section_id and insert the new content at that location.
+5: DELETE_SECTION - Delete the section specified by section_id (no content required).
+```
+
 ## Quip.addMembersToThread
 Shares the given thread with the given user IDs and/or adds the given thread to the given folder IDs. 
 

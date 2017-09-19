@@ -23,7 +23,7 @@ $app->post('/api/Quip/updateFolder', function ($request, $response) {
     
 
     $client = $this->httpClient;
-    $query_str = "https://platform.quip.com/1/folders/new";
+    $query_str = "https://platform.quip.com/1/folders/update";
 
     
 

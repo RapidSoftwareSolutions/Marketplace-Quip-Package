@@ -106,7 +106,7 @@
         },
         {
             "name": "getRecentThread",
-            "description": "Returns the given thread.",
+            "description": "Returns the most recent threads to have received messages, similar to the inbox view in the Quip app.",
             "args": [
                 {
                     "name": "accessToken",
@@ -461,7 +461,7 @@
                     "name": "memberIds",
                     "type": "List",
                     "info": "List of folder IDs or user IDs.",
-                    "required": false,
+                    "required": true,
                     "structure": {
                         "name": "id",
                         "type": "String",
@@ -701,7 +701,7 @@
                     "name": "content",
                     "type": "String",
                     "info": "Plain text content of the new message (ignored if parts is supplied)",
-                    "required": false
+                    "required": true
                 }
             ],
             "vendorRequest": {
@@ -782,6 +782,11 @@
                     "type": "List",
                     "info": "List of folder id`s",
                     "required": true,
+                    "structure":{
+                        "name": "id",
+                        "type": "String",
+                        "info": "Single folder id"
+                    },
                     "vendorSchema": {
                         "name": "ids",
                         "format": "toString:{,}"
@@ -923,7 +928,7 @@
                 }
             ],
             "vendorRequest": {
-                "url": "https:\/\/platform.quip.com\/1\/folders\/new",
+                "url": "https:\/\/platform.quip.com\/1\/folders\/update",
                 "method": "post",
                 "headers": {
                     "Authorization": "Bearer {$data['accessToken']}"
@@ -972,7 +977,7 @@
                     "name": "memberIds",
                     "type": "List",
                     "info": "List of folder IDs or user IDs.",
-                    "required": false,
+                    "required": true,
                     "structure": {
                         "name": "id",
                         "type": "String",
@@ -1034,7 +1039,7 @@
                     "name": "memberIds",
                     "type": "List",
                     "info": "List of folder IDs or user IDs.",
-                    "required": false,
+                    "required": true,
                     "structure": {
                         "name": "id",
                         "type": "String",
